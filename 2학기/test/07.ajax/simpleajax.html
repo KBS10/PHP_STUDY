@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="2020.06.12_ajax.js"></script>
+</head>
+<body>
+    <fieldset style="width: 400px">
+        <legend>Ajax 예제</legend>
+        <!-- 버튼 클릭 시 ,sendXMLHttpRequest()자바스크립트 함수 실행 -->
+        <input type="button" id="ajaxTest" value="Async HTTP 전송" onclick="sendXMLHttpRequest()">
+        <label for = "ajaxTest">전송 후 수신 값 : </label>
+        <!-- Ajax 통신 후 결과 값을 출력하기 위해 사용 -->
+        <div id = "answer"></div>
+    </fieldset>
+</body>
+</html>

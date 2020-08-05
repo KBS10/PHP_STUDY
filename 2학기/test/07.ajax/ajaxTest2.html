@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function exeHttpRequest(isSynchMode) {
+            let xmlHttpReq = new XMLHttpRequest();
+
+            xmlHttpReq.onreadystatechange = function () {
+                // let statusElement = document.getElementById("status");
+
+                if (xmlHttpReq.readyState == 1) {
+                    console.log("ready State : 1 OPENED");
+                } else if (xmlHttpReq.readyState == 2) {
+                    console.log("ready State : 2 HEADERS_RECEIVED");
+                } else if (xmlHttpReq.readyState == 3) {
+                    console.log("ready State : 3  LOADING");
+                } else if (xmlHttpReq.readyState == 4) {
+                    console.log("ready State : 4 DONE");
+                } else {
+                    console.log("Something is wrong, write long file!!");
+                }
+            }
+            console.log("readyState value before calling xmlHttpReq.open() : " + xmlHttpReq.readyState);
+
+            xmlHttpReq.open("GET", "myajax.php", isSynchMode); // isSynchMode : false 동기 전송
+            xmlHttpReq.send();
+            console.log("Sent HTTP Request");
+        }
+            
+                    // statusElement.style.color="RED";
+                    // statusElement.innerText = "HTTP Response 메세지 수신 중"
+
+                    // statusElement.style.color="BLUE";
+                    // statusElement.innerText = "HTTP Response 메세지 수신 완료"
+
+            // xmlHttpReq.onreadystatechange = () => console.log(xmlHttpReq.readyState);
+
+            // var statusElement = document.getElementById("status");
+            // statusElement.style.color="BLACK";
+            // statusElement.innerText = "HTTP Response 메세지 전송"
+   
+
+    </script>
+    
+    <fieldset style="width: 400px">
+        <legend> Ajax HTTP Request 동기 vs 비동기 전송 예제</legend>
+        <input type="button" id="ajaxTest" value="Sync HTTP 전송" onclick="exeHttpRequest(true)"><br>
+        <div id="status"></div>
+    </fieldset>
+</body>
+
+</html>

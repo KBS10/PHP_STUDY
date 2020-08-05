@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript 기말고사 1번 문제</title>
+    <style>
+        fieldset {
+            background-color: #eeeeee;
+        }
+        legend {
+            background-color: gray;
+            color: white;
+            padding: 5px 10px;
+        }
+        input {
+            margin: 5px;
+            size: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<fieldset style="width:400px">
+    <input id="leftOperand" type="text" style="width:50px">
+    <select id="operator">
+        <option value="plus">+</option>
+        <option value="minus">-</option>
+        <option value="multiply">X</option>
+        <option value="division">/</option>
+    </select>
+    <input id="rightOperand" type="text" style="width:50px">=
+    <input id="result" type="text" style="width:100px">
+    <input type="button" value="계산하기" onclick="doCalculation()">
+</fieldset>
+
+<script>
+    // 이항 연산 후 결과 값 "result" HTML element에 반영
+    // 아래 HTML Form element 값 획득
+    //  - 좌항 피연산자 HTML element : leftOperand
+    //  - 우항 피연산자 HTML element : rightOperand
+    //  - 연산자 HTML element : operator
+
+    function doCalculation() {
+
+        // html ID값을 가져옴 '
+        // 좌항' '우항' '연산자' '결과' 저장
+        let leftOperand     = document.getElementById('leftOperand').value;
+        let rightOperand    = document.getElementById('rightOperand').value;
+        let operator        = document.getElementById('operator').value;
+        let result          = document.getElementById('result');
+
+        // 연산의 결과 값 저장하는 변수
+        var operatorResult;
+
+        // select문에서 불러오는 value 값에 따른 조건문
+        // String 값으로 받아오기때문에 parseFloat로 변환(반복)
+        switch(operator){
+            case "plus": 
+                //plus 연산 
+                operatorResult = parseFloat(leftOperand) + parseFloat(rightOperand);
+                // console.log(operatorResult);
+                // 결과값 result 출력
+                result.value = operatorResult;
+                break;
+            case "minus": 
+                //minus 연산 
+                operatorResult = parseFloat(leftOperand) - parseFloat(rightOperand);
+                // console.log(operatorResult);
+                result.value = operatorResult;
+                break;
+            case "multiply": 
+                //multiply 연산 
+                operatorResult = parseFloat(leftOperand) * parseFloat(rightOperand);
+                // console.log(operatorResult);
+                result.value = operatorResult;
+                break;
+            case "division": 
+                //division 연산 
+                operatorResult = parseFloat(leftOperand) / parseFloat(rightOperand);
+                // console.log(operatorResult);
+                result.value = operatorResult;
+                break;
+        }
+
+    }
+</script>
+</body>
+</html>

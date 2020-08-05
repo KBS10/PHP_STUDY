@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input{
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        let log = console.log;
+        ////////////////////////////////////////////////////////////////////////////////////////
+        // YJMember 클래스 정의
+        function YJMember(argId, argName){
+            this.id = argId;
+            this.name = argName;
+        }
+        // YJMember 프로토타입 메서드 정의
+        YJMember.prototype.getId = function () {return this.id;}
+        YJMember.prototype.getName = function () {return this.name;}
+        YJMember.prototype.setName = function (argName) {this.name = argName;}
+
+        // Student 클래스 정의
+        function Student (argId, argName){
+            YJMember.apply(this, [argId, argName]);
+            this.courseGrade = [];
+            this.sum = 0;
+            this.avg = 0;
+        }
+        // Student 프로토타입 체이닝 설정
+        Student.prototype = Object.create(YJMember.prototype);
+        Student.prototype.constructor = Student;
+
+        // Student 프로토타입 메서드 정의
+        Student.prototype.getSum = function() {return this.sum;};
+        Student.prototype.getAvg = function() {return this.avg;};
+        Student.prototype.calcSum = function() {
+            this.sum = 0;
+            for (let i = 0; i < this.courseGrade.length; i++) {
+                this.sum += this.courseGrade[i];
+            }
+            return this.sum
+        };
+        Student.prototype.calcAvg = function(){
+            return this.avg = this.sum/ this.courseGrade.length;
+        };
+        Student.prototype.addGrades = function(argJava, argDB, argJapanes){
+            this.courseGrade[0] = parseInt(argJava);
+            this.courseGrade[1] = parseInt(argDB);
+            this.courseGrade[2] = parseInt(argJapanes);
+        };
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
+        // 버튼 이벤트 처리
+        function btn_process(argBtnType){
+            switch(argBtnType){
+                case "add":      addGrade(); break;
+                case "ascend":   sort(true); break;
+                case "descend":  sort(false); break;
+            }
+        }
+        // Student 객체 저장 리스트
+        var stdList = [];
+        
+        function addGrade(){
+            // input element 이름, 학번, 성적 
+            let stdName     = document.getElementById('stdName').value;
+            let stdID       = document.getElementById('stdID').value;
+
+            let gradeJava   = document.getElementById('gradeJava').value;
+            let gradeDB     = document.getElementById('gradeDB').value;
+            let gradeJapan  = document.getElementById('gradeJapan').value;
+
+            let score = [gradeJava, gradeDB, gradeJapan];
+
+            let newStd = new Student(stdID, stdName);
+            newStd.addGrades(...score);
+            newStd.calcSum();
+            newStd.calcAvg();
+            stdList.push(newStd);
+            log(stdList); 
+
+            console.log(newStd);
+            // Table 삭제
+            del_table_all_rows();
+            // Table 출력
+            prt_stdData_to_table();
+
+            // JSON in Ajax
+            // exeHttpRequest(newStd);
+            
+            // Ajax 이용 DBMS 업데이트
+            MyAjax.sendHttpRequest("insert", newStd, ajaxRspProcess, "gpa_process.php", true);
+
+        }
+
+        let MyAjax = (function (){
+            let httpResponse = false;
+
+            return new function(){
+                this.httpReq;
+                this.sendHttpRequest = function (argCmdType, argData, argCallbackFunc, argReqUrl, arglsAsync){
+                    if(httpResponse){
+                        log("waiting HTTP response");
+                        return false;
+                    }
+                    this.httpReq = new XMLHttpRequest();
+                    this.httpReq.onreadystatechange = argCallbackFunc;
+                    this.httpReq.open("POST", argReqUrl, arglsAsync);
+                    this.httpReq.setRequestHeader("Content-type", "application/json");
+
+                    let msg = {"cmdType" : argCmdType, "data": argData};
+                    this.httpReq.send(JSON.stringify(msg));
+
+                    httpResponse = true;
+                };
+                this.getReadyState = function(){
+                    return this.httpReq.readyState
+                };
+                this.getResponse = function(){
+                    console.log(this.httpReq.responseText);
+                    return JSON.parse(this.httpReq.responseText);
+                };
+                this.getRspResultStatus = function(){
+                    return this.httpReq.status;
+                }
+                this.httpResponse = function(){
+                    return httpResponse;
+                };
+                this.clearHttpRspStatus = function(){
+                    httpResponse = false;
+                };
+            }
+        })();
+
+        // Ajax HTTP response 메시지 처리 로직
+        function ajaxRspProcess() {
+            // HTTP response 메시지를 수신하고, 상태 값이 200일 경우 (성공적으로 서버로부터 요청 파일 수신)
+            if (MyAjax.getReadyState() == 4 && MyAjax.getRspResultStatus() == 200) {
+                // HTTP Response body 내용을 JSON 파싱 후 객체 반환
+                let rcvdObj = MyAjax.getResponse();
+
+                // HTTP Rsp 명령어 종류에 따른 처리
+                switch (rcvdObj["cmdType"]) {
+                    case "listup":  // 학생 성적 조회 결과, 수신 레코드 HTML table에 반영
+                        if (rcvdObj["rspStatus"] == true) {
+                            console.log(rcvdObj);
+                            $numRow = rcvdObj["rspData"].length;
+                            $numField = rcvdObj["rspData"][0].length;
+                            // Model 레코드 순회
+                            for ($i = 0; $i < $numRow; $i++) {
+                                $stdData = rcvdObj["rspData"][$i];
+                                // 선택된 Model 레코드의 학생 정보를 객체화 후 리스트 저장
+                                let newStd = new Student($stdData[0], $stdData[1]);
+                                newStd.addGrades(...$stdData.slice(2, 5));
+                                newStd.calcSum();
+                                newStd.calcAvg();
+                                stdList.push(newStd);
+                            }
+                            // 학생 성정 HTML table 출력
+                            prt_stdData_to_table();
+                        } else
+                            window.alert("DBMS updating is failed");
+                        break;
+                    case "insert": // 학생 성적 입력 결과
+                        if (rcvdObj["rspStatus"] == true) {
+                            console.dir(rcvdObj);
+                            let newStd = new Student(rcvdObj["rspData"].id, rcvdObj["rspData"].name);
+                            newStd.addGrades(rcvdObj["rspData"].courseGrade[0], rcvdObj["rspData"].courseGrade[1], rcvdObj["rspData"].courseGrade[2]);
+                            stdList.push(newStd);
+
+                            add_table_row([newStd.getId(), newStd.getName(), ...newStd.courseGrade, newStd.getSum(), newStd.getAvg().toFixed(1)]);
+
+                        }
+                        break;
+                }
+                MyAjax.clearHttpRspStatus(); // HTTP Rsp 메시지 수신 완료, 플래그 초기화
+
+                return true;
+                // HTTP Response 메시지는 수신 했으나 상태 값이 200 이 아닐 경우, 에러 처리
+            } else if (MyAjax.getReadyState() == 4) {
+                console.log("Previously sending HTTP request is failed due to the some reason.");
+                MyAjax.clearHttpRspStatus(); 
+            }
+        }
+
+
+        // stdTable 내 열 추가
+        function add_table_row(argList){
+            let stdTable = document.getElementById('stdTable');
+            let newRow = stdTable.insertRow(stdTable.rows.length);
+
+            // 순번
+            let cell = newRow.insertCell(0);
+            cell.innerHTML = stdTable.rows.length - 1;
+
+            for(let i = 1; i <= argList.length; i++){
+                let cell = newRow.insertCell(i);
+                cell.innerHTML = argList[i - 1];
+            }
+        }
+
+        // stdTable 모든 열 삭제
+        function del_table_all_rows(){
+            let stdTable = document.getElementById('stdTable');
+            while(stdTable.rows.length > 1){
+                stdTable.deleteRow(1);
+            }
+        }
+
+        // true 일 경우 오름차순, false 일 경우 내림차순
+        function sort(argSort) {
+            if(argSort){
+                stdList.sort((a,b) => b.sum - a.sum);
+            }else{
+                stdList.sort((a,b) => a.sum - b.sum);
+            }
+            del_table_all_rows();
+            prt_stdData_to_table();
+        }
+        
+        // 테이블 추가
+        function prt_stdData_to_table(){
+            for( let myObj of stdList){
+                add_table_row([myObj.getId(), myObj.getName(),...myObj.courseGrade, myObj.getSum(), myObj.getAvg().toFixed(1)])
+            }
+        }
+        
+        window.addEventListener("DOMContentLoaded", function (event) {
+            MyAjax.sendHttpRequest("listup", null, ajaxRspProcess, "gpa_process.php", true);
+        })
+
+    </script>
+</head>
+<body>
+    <fieldset style="width: 1000px;">
+    이름 : <input type="text" id="stdName" size="5" value="김범수">
+    학번 : <input type="text" id="stdID" size="5" value="1701304">
+    JAVA : <input type="text" id="gradeJava" size="2" value="90">
+    DB : <input type="text" id="gradeDB" size="2" value="80">
+    일본어 : <input type="text" id="gradeJapan" size="2" value="70">
+    
+    <input type="button" value="성적입력"       name="add" onclick="btn_process(this.name)">
+    <input type="button" value="성적정렬(오름)" name="ascend" onclick="btn_process(this.name)">
+    <input type="button" value="성적정렬(내림)" name="descend" onclick="btn_process(this.name)">
+    </fieldset>
+
+    <div id="statusElement"></div>
+
+    <table id="stdTable" style="width: 1000px;">
+        <tr id="stdTable_row_1">
+        <th>순번</th>    
+        <th>학번</th>    
+        <th>이름</th>    
+        <th>JAVA</th>    
+        <th>DB</th>    
+        <th>일본어</th>    
+        <th>총점</th>    
+        <th>평균</th>    
+        </tr>
+    </table>
+</body>
+</html>

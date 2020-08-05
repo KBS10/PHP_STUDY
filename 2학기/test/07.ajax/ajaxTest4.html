@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function exeHttpRequest(isSynchMode) {
+            let xmlHttpReq = new XMLHttpRequest();
+
+            xmlHttpReq.onreadystatechange = function () {
+
+                if (xmlHttpReq.readyState == 4) {
+                    let statusElement = document.getElementById("status");
+                    statusElement.innerText = xmlHttpReq.responseText;
+                } else {
+                    console.log("Something is wrong, write long file!!");
+                }
+            }
+            xmlHttpReq.open("POST", "myajax3.php", true); // isSynchMode : false 동기 전송
+            xmlHttpReq.setRequestHeader("Context-type", "application/x-www-form-urlencoded");
+            var myData = 'name=김범수&age=23';
+            xmlHttpReq.send(myData);// send 메서드 호출 시 서버 전달  DATA 입력
+
+        }
+
+    </script>
+
+      
+<fieldset style="width: 400px">
+    <legend> Ajax HTTP Request POST 예제</legend>
+    <input type="button" id="ajaxTest" value="Async HTTP POST 전송" onclick="exeHttpRequest()"><br>
+    <div id="status"></div>
+</fieldset>
+</body>
+</html>

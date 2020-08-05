@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript 기말고사 3번 문제</title>
+    <style>
+        fieldset {
+            background-color: #eeeeee;
+        }
+
+        legend {
+            background-color: gray;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        input {
+            margin: 5px;
+            size: 2px;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<fieldset style="width:500px">
+    <button onclick="getBingoTable()">Ajax 활용 빙고 테이블 획득</button>
+    <div id="matrixMark"></div>
+    <table id="myTable">
+    </table>
+</fieldset>
+</body>
+
+<script>
+    // bingo Table 실행 횟수 저장
+    var count = 0;
+    // Ajax를 이용하여 빙고 테이블 획득
+    function getBingoTable() {
+        MyAjax.sendHttpRequest("getBingoTable", null, ajaxRspProcess, "ycjung_game.php", true);
+    }
+
+
+     // Ajax HTTP response 메시지 처리 로직
+     function ajaxRspProcess() {
+            // HTTP response 메시지를 수신하고, 상태 값이 200일 경우 (성공적으로 서버로부터 요청 파일 수신)
+            if (MyAjax.getReadyState() == 4 && MyAjax.getRspResultStatus() == 200) {
+                // HTTP Response body 내용을 JSON 파싱 후 객체 반환
+                let rcvdObj = MyAjax.getResponse();
+                // Bingo Table 획득 시 count 1 증가
+
+                // HTTP Rsp 명령어 종류에 따른 처리
+                switch (rcvdObj["cmdType"]) {
+                    case "getBingoTable":  // 빙고 조회 결과, 수신 레코드 HTML table에 반영
+                        if (rcvdObj["rspStatus"] == true) {
+                            count++; // 빙고 조회시 count 증가
+                            let colNum = rcvdObj["rspData"].colNum; // colmun 수 가져오기
+                            console.log(colNum); // 가져온 column 수 출력
+
+                            // matrixMark 불러오기
+                            let matrixMark = document.getElementById("matrixMark");
+                            let rcvdMsg = `${colNum} X ${colNum} bingo table, attempt count : ${count}`
+                            matrixMark.innerText= rcvdMsg;
+                            
+                            // random 으로 불려와진 bingo 숫자 불러오기
+                            let data = rcvdObj["rspData"].data;
+                            console.log(data); // 가져온 random 수 출력
+
+                            // myTable 불러오기
+                            let myTable = document.getElementById("myTable");
+
+                            // myTable 삭제
+                            del_table_all_rows();
+                            
+                            // Record 생성
+                            for(let i = 0; i < colNum; i++){
+                                var row = myTable.insertRow(i);
+                                // cell 생성
+                                for(let j = 0; j < colNum; j++){
+                                    var col = row.insertCell(j);
+                                    col.innerHTML = data[i * colNum + j];
+                                }
+                            }
+                            
+                        } else
+                            window.alert("DBMS 업데이트 실패");
+                        break;
+                   
+                }
+                MyAjax.clearHttpRspStatus(); // HTTP Rsp 메시지 수신 완료, 플래그 초기화
+
+                return true;
+                // HTTP Response가 수신을 하였지만, 상태 값이 200이 아닌경우
+            } else if (MyAjax.getReadyState() == 4) {
+                console.log("HTTP Response가 수신 완료, 상태가 이상함");
+                MyAjax.clearHttpRspStatus(); 
+            }
+        }
+
+    let MyAjax = (function (){
+            let httpResponse = false;
+            // HTTP Request 전송 메서드
+            return new function(){
+                this.httpReq;
+                this.sendHttpRequest = function (argCmdType, argData, argCallbackFunc, argReqUrl, arglsAsync){
+                    // 현재 HTTP response 메시지 대기 중일 경우, 현 HTTP request 무시
+                    if(httpResponse){
+                        log("waiting HTTP response");
+                        return false;
+                    }
+                    this.httpReq = new XMLHttpRequest();
+                    this.httpReq.onreadystatechange = argCallbackFunc;
+                    this.httpReq.open("POST", argReqUrl, arglsAsync);
+                    this.httpReq.setRequestHeader("Content-type", "application/json"); // Header body JSON 표기법 알림
+                    
+                    // 전송 데이터를 객체로 생성
+                    let msg = {"cmdType" : argCmdType, "data": argData};
+                    this.httpReq.send(JSON.stringify(msg)); // 객체를 JSON 표기법으로 문자열 반환
+
+                    httpResponse = true;
+                };
+                // XMLHTTPRequest : readyState 반환
+                this.getReadyState = function(){
+                    return this.httpReq.readyState
+                };
+                // XMLHTTPRequest : responseText JSON 파싱 후 반환
+                this.getResponse = function(){
+                    console.log(this.httpReq.responseText);
+                    return JSON.parse(this.httpReq.responseText);
+                };
+                // XMLHTTPRequest : response msg 낸 status 반환
+                this.getRspResultStatus = function(){
+                    return this.httpReq.status;
+                };
+                // HTTP Response 메시지 수신 대기 중인지 판별
+                this.httpResponse = function(){
+                    return httpResponse;
+                };
+                // HTTP Response 메시지 수신 완료 플래그 설정 반환
+                this.clearHttpRspStatus = function(){
+                    httpResponse = false;
+                };
+            }
+        })();
+
+    // myTable 모든 열 삭제
+    function del_table_all_rows(){
+        let myTable = document.getElementById('myTable');
+        while(myTable.rows.length > 0){
+                myTable.deleteRow(0);
+        }
+    }
+    
+</script>
+</html>

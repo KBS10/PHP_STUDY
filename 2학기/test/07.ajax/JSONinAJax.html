@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function exeHttpRequest(){
+            let xmlHttpReq = new XMLHttpRequest();
+
+            xmlHttpReq.onreadystatechange = function(){
+                if(xmlHttpReq.readyState == 4){
+                    let statusElement = document.getElementById("status");
+                    // HTTP Response body 내용을 JSON 파싱 후 객체 반환
+                    let rcvdObj = JSON.parse(xmlHttpReq.responseText);
+
+                    // 객체의 멤버 이름과 값 출력
+                    let rcvdMsg = "";
+                    for(let i = 0; i < rcvdObj.length; i++){
+                        for(let mb in rcvdObj[i]){
+                            rcvdMsg += mb + " : " + rcvdObj[i][mb] + "\n";
+                        }
+                        rcvdMsg += "\n\n";
+                    }
+                    statusElement.innerText = rcvdMsg;
+                }
+            }
+            xmlHttpReq.open("POST", "myajax4.php", true);
+            xmlHttpReq.setRequestHeader("Content-type", "application/json"); // Header body JSON 표기법 알림
+            // 전송 데이터를 객체로 생성
+            var myData = {name : "김범수", age:22, phone:"053-940-5290"};
+            xmlHttpReq.send(JSON.stringify(myData));
+        }
+    </script>
+    <fieldset style="width: 500px;">
+    <legend>Ajax HttP Request JSON 전송 예제</legend>
+    <input type="button" id="ajaxTest" value="Async HTTP JSON 전송" onclick="exeHttpRequest()"><br>
+    <div id= "status"></div>
+    </fieldset>
+</body>
+</html>

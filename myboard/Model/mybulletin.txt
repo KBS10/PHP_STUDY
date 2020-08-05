@@ -1,0 +1,18 @@
+ use ycj_test;
+
+ DROP TABLE IF EXISTS mybulletin;
+
+ create table mybulletin(
+	board_id int(10) unsigned auto_increment not null,
+	board_pid int(10) unsigned not null default 0,
+	user_name varchar(20) not null,
+	user_passwd varchar(100) not null,
+	title varchar(250) not null,
+	contents text not null,
+	hits int(10) not null default 0,
+	reg_date datetime not null,
+	PRIMARY KEY(board_id),
+	KEY board_pid (board_pid)
+ );
+
+
