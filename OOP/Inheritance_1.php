@@ -34,7 +34,10 @@ ini_set("display_errors", 1);
 
 /////////////////////////////////////////////////////////////
 
-//스크립트와 컴파일러 언어의 차이
+// 스크립트와 컴파일러 언어의 차이
+// Java와 PHP의 차이
+// 컴파일 언어는 Line 단위 번역 후 실행
+// 스크립트 언어는 객체 생성 시, 상위 클래스들의 내용을 합본하여 객체화 한다.
 
 //class A{
 //    function prtSomething(){
@@ -46,6 +49,23 @@ ini_set("display_errors", 1);
 //}
 //$obj1 = new B();
 //$obj1->prtSomething();
+
+//class A{
+//    function test(){
+//        echo "A";
+//    }
+//}
+//class B extends A{
+//    function test(){
+//        echo "B";
+//    }
+//}
+//
+//function Test(A $argObj){
+//    $argObj->test();
+//}
+//$obj = new B();
+//Test($obj);
 
 /////////////////////////////////////////////////////////////
 
@@ -72,7 +92,7 @@ ini_set("display_errors", 1);
 
 /////////////////////////////////////////////////////////////
 
-//상속 생성자와 소멸자
+// 상속 생성자와 소멸자
 // 상속 시 상위클래스의 생성자, 소멸자는 호출되지 않는다.
 
 //class A{
@@ -217,186 +237,6 @@ ini_set("display_errors", 1);
 
 /////////////////////////////////////////////////////////////
 
-// 상수 접근
-
-//class MyClass{
-//    const CONST_VALUE = 'A constant value';
-//}
-//$classname = 'MyClass';
-//echo $classname::CONST_VALUE;
-//echo MyClass::CONST_VALUE;
-//
-//class OtherClass extends MyClass{
-//    public static $my_static = 'static var';
-//
-//    public static function doubleColon(){
-//        echo parent::CONST_VALUE."<br>";
-//        echo self::$my_static."<br>";
-//    }
-//}
-//$classname = 'OtherClass';
-//echo $classname::doubleColon();
-//OtherClass::doubleColon();
-
-/////////////////////////////////////////////////////////////
-
-// 범위 해결 연산자 self:: 와 $this의 차이점
-// self
-// ㄴ 자기자신의 클래스를 찾아간다.
-
-//class A{
-//    public function test(){
-//        echo $this->i_v."<br>";
-//        echo self::c_v."<br>";
-//    }
-//}
-//class B extends A{
-//    public $i_v = "bar";
-//    const c_v = "foo";
-//}
-//$obj1 = new B();
-//$obj1 -> test();
-
-//class A{
-//    public $i_v = "bar";
-//    const c_v = "foo";
-//    public function test(){
-//        echo $this->i_v."<br>";
-//        echo self::c_v."<br>";
-//    }
-//}
-//class B extends A{
-//    public $i_v = "bar";
-//    const c_v = "foo";
-//}
-//$obj1 = new B();
-//$obj1 -> test();
-
-/////////////////////////////////////////////////////////////
-
-// 범위 해결 연산자 parent::
-
-//class A{
-//    public $i_v = "i_v 1";
-//    const c_v   = "c_v 1";
-//    static $s_v = "s_v 1";
-//
-//    public function test(){
-//        echo $this->i_v."<br>";
-//        echo self::$s_v."<br>";
-//    }
-//}
-//class B extends A{
-//    public $i_v = "i_v 2";
-//    const c_v   = "c_v 2";
-//    static $s_v = "s_v 2";
-//    function ycj(){
-//        echo self::$s_v."<br>";
-//        parent::test();
-//    }
-//}
-//$b = new b();
-//$b -> ycj();
-
-/////////////////////////////////////////////////////////////
-
-// 범위 해결 연산자 Late static binding
-
-//class A{
-//    public $a;
-//
-//    function set ($argA){
-//        $this -> $a = argA;
-//    }
-//}
-//$obj = new A();
-//$obj -> set(2);
-//$obj -> set(2.0);
-//$obj -> set("Two");
-
-//class A{
-//    function test(){
-//        echo "A's test() <br>";
-//    }
-//    function callTest(){
-//        $this->test();
-//    }
-//}
-//class B extends A {
-//    function test(){
-//        echo "B's test() <br>";
-//    }
-//}
-//$b = new B();
-//$b ->callTest();
-
-//class A{
-//    static function test(){
-//        echo "A's test() <br>";
-//    }
-//    function callTest(){
-//        $this->test();
-//    }
-//}
-//class B extends A {
-//    static function test(){
-//        echo "B's test() <br>";
-//    }
-//}
-//$b = new B();
-//$b ->callTest();
-
-//class A{
-//    public static function who(){
-//        echo __CLASS__;
-//    }
-//    public static function test(){
-//        self::who();
-//    }
-//}
-//class B extends A{
-//    public static function who(){
-//        echo __CLASS__;
-//    }
-//}
-//B::test();
-
-//class A{
-//    public static function who(){
-//        echo __CLASS__;
-//    }
-//    public static function test(){
-//    static::who();
-//    }
-//}
-//class B extends A{
-//    public static function who(){
-//        echo __CLASS__;
-//    }
-//}
-//B::test();
-
-/////////////////////////////////////////////////////////////
-
-//class A{
-//    const c_v = 18;
-//    public $i_v = 19;
-//    static $s_v = 20;
-//    function test(){
-//        echo static::$s_v."<br>";
-//    }
-//}
-//class B extends A{
-//    static $s_v = 30;
-//    function test(){
-//        echo parent::test();
-//        echo self::$s_v."<br>";
-//    }
-//}
-//$b = new B();
-//$b -> test();
-
-/////////////////////////////////////////////////////////////
 
 
 
