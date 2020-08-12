@@ -24,7 +24,6 @@ if(isset($_GET['board_id']) && is_numeric($_GET['board_id'])){
     <title>Document</title>
 </head>
 <body>
-
         <div>글 삭제 : <?php echo "글 번호".$writeNumber?></div>
         <form method="post" action="<?php echo Board_Info::FILENAME_DELETE_PROCESS."?board_id=$writeNumber";?>">
             <div> 비밀번호 : </div>

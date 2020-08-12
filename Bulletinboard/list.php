@@ -236,8 +236,8 @@ if(array_key_exists('logout',$_POST)){
         회원등급 : <?PHP echo $_SESSION['grade']; ?>
             <input type='submit' value = '로그아웃' name='logout'>
         </form>
-    </div>
 <?PHP endif; ?>
+
     <h2 align=center>게시판</h2>
     <table align = center>
         <thead align = "center">

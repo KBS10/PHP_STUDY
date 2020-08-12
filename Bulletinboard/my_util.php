@@ -74,11 +74,11 @@ function dataValidation($dataType, $argList, $htmlStripTageOn){
     }
     return $getArrayData;
 }
-
 // page 이동하는 함수
 function pageMove($fileName){
     echo "<script>location.href='$fileName';</script>";
 }
+
 
 // 오류 메세지를 출력하는 함수
 // 오류 메세지를 출력하고 list.php로 이동

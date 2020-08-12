@@ -54,7 +54,7 @@ prtErrorMsg("잘못된 접근입니다.");
             <td bgcolor=white>
                 <table class = "table2">
                     <tr><td>제목</td><td><input type="text" name="title" style="width: 300px" required></td></tr>
-                    <tr><td>작성자</td><td><?PHP echo $_SESSION['id']?> </td></tr>
+                    <tr><td>작성자</td><td><?PHP echo $_SESSION['id']?></td></tr>
                     <input type="text" name="user_name" value=<?PHP echo $_SESSION['id']?> hidden>
                     <input type="text" name="user_passwd" value=<?PHP echo $_SESSION['password']?> hidden>
                     <tr><td colspan = "2"><textarea name="content" rows="20" cols="92" required></textarea></td></tr>
