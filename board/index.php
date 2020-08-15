@@ -1,7 +1,8 @@
 <?php
+session_start();
 require_once ("Conf/board_conf.php");
 require_once ("util/board_util.php");
-session_start();
+require_once ("Model/board_model.php");
 
 ////////////////////////////////////////////////////////////
 // php 오류 확인 하는 코드
@@ -16,7 +17,12 @@ $titles = [
     'view'      => '게시물 조회',
     'modify'    => '게시물 수정',
     'delete'    => '게시물 삭제'
-]
+];
+switch($titles){
+    case "list":
+        selectBoardList();
+        break;
+}
 ?>
 
 <!doctype html>

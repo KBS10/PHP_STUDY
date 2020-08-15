@@ -9,8 +9,9 @@ function prtErrorMsg($errorMsg){
 function pageMove($fileName){
     echo "<script>location.href='./?page=$fileName';</script>";
 }
+
 // data의 입력에 대해
-function dataValidatioin($dataType, $argList, $htmlStripTageOn){
+function dataValidation($dataType, $argList, $htmlStripTageOn){
     switch($dataType){
         case "POST":
             $data = $_POST;

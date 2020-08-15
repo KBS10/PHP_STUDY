@@ -1,5 +1,5 @@
 <?php if(isset($_SESSION['id']) == false && isset($_SESSION['password']) == false ): ?>
-    <form id="login_form" name="login_form" method="post" action=<?php echo Board_Info::FILENAME_LOGIN_PROCESS; ?>>
+    <form id="login_form" name="login_form" method="post" action=<?php echo "./?page=".Board_Info::FILENAME_LOGIN_PROCESS; ?>>
         ID : <input type="text" name="id">
         암호 : <input type="password" name="password">
         <input type="submit" name="로그인하기" value="Login">
@@ -28,9 +28,9 @@
 
 <div class = text align="center">
     <?php if(isset($_SESSION['id']) == true && isset($_SESSION['password']) == true ): ?>
-        <button class="view_btn_write" onClick="location.href='./<?PHP echo Board_Info::FILENAME_WRITE?>'">글쓰기</button>
+    <button class="view_btn_write" onClick="location.href='./?page=<?PHP echo Board_Info::FILENAME_WRITE?>'">글쓰기</button>
     <?PHP endif; ?>
-    <button class="view_btn_list" onClick="location.href='./<?PHP echo Board_Info::FILENAME_LIST?>'">글목록</button>
+    <button class="view_btn_list" onClick="location.href='./?page=<?PHP echo Board_Info::FILENAME_LIST?>'">글목록</button>
 </div>
 
 <form  method="post" align="center" action=<?php echo Board_Info::FILENAME_LIST; ?>>

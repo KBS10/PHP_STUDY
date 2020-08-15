@@ -98,45 +98,45 @@ ini_set("display_errors", 1);
 
 /////////////////////////////////////////////////////////
 
-interface Red{
-    public function printRed();
-}
-interface Green{
-    public function printGreen();
-}
-interface Blue{
-    public function printBlue();
-}
-interface Color extends Red, Green, Blue{
-    public function printColor();
-}
-interface Black{
-    public function printBlack();
-}
-class Printer implements Color, Black{
-    public function printRed(){
-        echo "빨간색 출력!!<br>";
-    }
-    public function printGreen(){
-        echo "녹색 출력!!<br>";
-    }
-    public function printBlue(){
-        echo "파랑색 출력!!<br>";
-    }
-    public function printColor(){
-        echo "<br> --컬러모드 출력--<br>";
-        $this->printRed();
-        $this->printGreen();
-        $this->printBlue();
-    }
-    public function printBlack(){
-        echo "<br>--흑백모드 출력--<br>";
-        echo "검정색 출력!!";
-    }
-}
-$InkJetColorPrinter = new Printer();
-$InkJetColorPrinter -> printColor();
-$InkJetColorPrinter -> printBlack();
+//interface Red{
+//    public function printRed();
+//}
+//interface Green{
+//    public function printGreen();
+//}
+//interface Blue{
+//    public function printBlue();
+//}
+//interface Color extends Red, Green, Blue{
+//    public function printColor();
+//}
+//interface Black{
+//    public function printBlack();
+//}
+//class Printer implements Color, Black{
+//    public function printRed(){
+//        echo "빨간색 출력!!<br>";
+//    }
+//    public function printGreen(){
+//        echo "녹색 출력!!<br>";
+//    }
+//    public function printBlue(){
+//        echo "파랑색 출력!!<br>";
+//    }
+//    public function printColor(){
+//        echo "<br> --컬러모드 출력--<br>";
+//        $this->printRed();
+//        $this->printGreen();
+//        $this->printBlue();
+//    }
+//    public function printBlack(){
+//        echo "<br>--흑백모드 출력--<br>";
+//        echo "검정색 출력!!";
+//    }
+//}
+//$InkJetColorPrinter = new Printer();
+//$InkJetColorPrinter -> printColor();
+//$InkJetColorPrinter -> printBlack();
 
 //interface A{
 //    // 추상메소드, 상수
@@ -173,6 +173,7 @@ $InkJetColorPrinter -> printBlack();
 
 // trait의 타켓은 메서드 : 클래스 인스턴스 + 추상메서드
 
+// Trait : 소스코드의 재사용률을 높인다.
 
 
 //trait IGoMoYa{
@@ -242,6 +243,38 @@ $InkJetColorPrinter -> printBlack();
 
 /////////////////////////////////////////////////////////
 
+// Modifier 제어자
+// 접근제어자와 그 외
+
+// 그 외 : static, final
+// final : 변수(상수), 메서드(오버 라이딩 금지), 클래스(상속 금지)
+
+//trait A{
+//    function prtValue(){
+//        echo "A's trait invoked <br>";
+//    }
+//}
+//trait B{
+//    function prtValue(){
+//        echo "B's trait invoked <br>";
+//    }
+//}
+//trait C{
+//    function prtValue(){
+//        echo "C's trait invoked <br>";
+//    }
+//}
+//class AClass{
+//    use A, B, C{
+//        A::prtValue insteadof B, C;
+//    }
+//}
+//class BClass extends AClass{
+//
+//}
+//$Obj = new BClass();
+//$Obj ->prtValue();
+
 //trait TraitTest{
 //    function test1(){
 //        echo "[trait: test()1]<br>";
@@ -294,8 +327,8 @@ $InkJetColorPrinter -> printBlack();
 
 //class Talker{
 //    use A, B{
-//        A::smalltalk insteadof B;
-//        B::bigtalk insteadof A;
+//        A::smallTalk insteadof B;
+//        B::bigTalk insteadof A;
 //    }
 //}
 //$obj = new Talker();
@@ -324,7 +357,7 @@ $InkJetColorPrinter -> printBlack();
 //$obj = new Main();
 //$obj->test1();
 //$obj->test2();
-////echo $obj->pv."<br>";
+//echo $obj->pv."<br>";
 
 /////////////////////////////////////////////////////////
 
@@ -360,6 +393,17 @@ $InkJetColorPrinter -> printBlack();
 //    private $test = 18;
 //}
 
+//trait A{
+//    public $value = "ycjung";
+//}
+//class B{
+//    use A;
+//    function test(){
+//        echo $this->value;
+//    }
+//}
+//$obj = new B;
+//$obj->test();
 
 
 

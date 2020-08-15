@@ -13,7 +13,6 @@ function makeDBConnection()
         prtErrorMsg();
     }
 
-    return $db_conn;
 }
 
 ?>

@@ -92,7 +92,8 @@ function getPagingInfo(){
             "isSearchingMode"   => $isSearchingMode,
 //            "keyword"           => $getArrayData['keyword'],
 //            "keyword_text"      => $getArrayData['keyword_text'],
-            "searchingSql"      => $searchingSql];}
+            "searchingSql"      => $searchingSql];
+}
 
 // 게시글 목록 HTML 출력
 function prtList($argPagingInfo){
