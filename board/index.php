@@ -2,6 +2,7 @@
 session_start();
 require_once ("Conf/board_conf.php");
 require_once ("util/board_util.php");
+require_once ("util/pagination.php");
 require_once ("Model/board_model.php");
 
 ////////////////////////////////////////////////////////////
@@ -10,7 +11,8 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 ////////////////////////////////////////////////////////////
 
-$page = isset($_GET['page']) ? $_GET['page'] : NULL;
+$board_id = isset($_GET['board_id']) ? $_GET['board_id'] : NULL;
+$page = isset($_GET['page']) ? $_GET['page'] : 0;
 $titles = [
     'write'     => '게시물 작성',
     'list'      => '게시물 목록',
@@ -18,11 +20,6 @@ $titles = [
     'modify'    => '게시물 수정',
     'delete'    => '게시물 삭제'
 ];
-switch($titles){
-    case "list":
-        selectBoardList();
-        break;
-}
 ?>
 
 <!doctype html>

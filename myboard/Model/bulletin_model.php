@@ -20,7 +20,6 @@ function getSqlForSearching($argKeyword, $argKeywordText)
             $searchingSql = " title" . $searchingSql . " or " . "contents" . $searchingSql;
             break;
     }
-
     return $searchingSql;
 }
 
