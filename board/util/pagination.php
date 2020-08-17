@@ -1,11 +1,6 @@
 <?php
 require_once ('Conf/board_conf.php');
 
-// 현 페이지 넘버에 대한 페이징 정보 획득
-//   -> 현 페이지 기준, 화면 출력 시작 글 번호
-//   -> 현 페이지 기준, 화면 출력 종료 글 번호
-//   -> Model 테이블 내 저장된 총 게시글 수
-//   -> 총 페이지 수
 function getPagingInfo($argCurrentPageNum, $argKeyword, $argKeywordText)
 {
     // Pagination 관련 변수
@@ -19,11 +14,11 @@ function getPagingInfo($argCurrentPageNum, $argKeyword, $argKeywordText)
     if (!is_null($argKeyword) && !is_null($argKeywordText)) {
         $isSearchingMode = true;
         // 등록된 총 게시글 수 획득 : 검색 모드
-        $totalRowNum = getNumOfArticle($argKeyword, $argKeywordText);
+        $totalRowNum = getListNumber($argKeyword, $argKeywordText);
     }else{
         $isSearchingMode = false;
         // 등록된 총 게시글 수 획득 : 일반 모드
-        $totalRowNum = getNumOfArticle(null, null);
+        $totalRowNum = getListNumber(null, null);
     }
 
     // 총 페이지 갯수 계산 : 게시글 총 갯수 / 페이지 당 게시글 수
@@ -39,14 +34,14 @@ function getPagingInfo($argCurrentPageNum, $argKeyword, $argKeywordText)
 
     // <<--- For debugging
     if (Board_Info::IS_DEBUG_MODE) {
-        echo "For debugging<br>";
-        echo "&nbsp&nbsp - Total Row : " . $totalRowNum . "<br>";
-        echo "&nbsp&nbsp - Total Page Num : " . $totalPageNum . "<br>";
-        echo "&nbsp&nbsp - pagingStartNum : " . $pagingStartNum . "<br>";
-        echo "&nbsp&nbsp - pagingEndNum : " . $pagingEndNum . "<br>";
-        echo "&nbsp&nbsp - currentPageNum : " . $currentPageNum . "<br>";
-        echo "&nbsp&nbsp - searching keyword : " . $argKeyword . "<br>";
-        echo "&nbsp&nbsp - searching keyword text : " . $argKeywordText . "<br>";
+        echo "For debugging <br>";
+        echo "- Total Row : " . $totalRowNum . "<br>";
+        echo "- Total Page Num : " . $totalPageNum . "<br>";
+        echo "- pagingStartNum : " . $pagingStartNum . "<br>";
+        echo "- pagingEndNum : " . $pagingEndNum . "<br>";
+        echo "- currentPageNum : " . $currentPageNum . "<br>";
+        echo "- searching keyword : " . $argKeyword . "<br>";
+        echo "- searching keyword text : " . $argKeywordText . "<br>";
     }
     // -->>
 

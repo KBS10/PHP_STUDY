@@ -6,7 +6,7 @@ if($getArray = dataValidation("POST", ['comment', 'comment_writer', 'comment_pas
     $getArray['comment_password'] = password_hash($getArray['comment_password'], PASSWORD_DEFAULT );
 
     // 댓글 DB 저장
-    $result = writeComment($_GET['board_id'], $getArray['comment_writer'], $getArray['comment_password'], $getArray['comment']);
+    $result = orderDB("writeComment", $_GET['board_id'], $getArray['comment_writer'], $getArray['comment_password'], null ,$getArray['comment']);
 
     // 리스트 페이지 이동
     pageMove(Board_Info::FILENAME_VIEW."&board_id=".$_GET['board_id']);

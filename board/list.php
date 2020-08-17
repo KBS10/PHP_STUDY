@@ -14,7 +14,7 @@ $pagingInfo = getPagingInfo($currentPageNum, $getData['keyword'], $getData['keyw
 $pagingInfo = getPagingInfo($currentPageNum, null, null);
 }
 //  DBMS로부터 현 페이지에 대한 글 목록 획득
-$articleList = getArticleList($pagingInfo['totalRowNum'], $pagingInfo['pagingStartNum'], $pagingInfo['pagingEndNum'],
+$articleList = getBoardList($pagingInfo['totalRowNum'], $pagingInfo['pagingStartNum'], $pagingInfo['pagingEndNum'],
 $pagingInfo['isSearchingMode'], $pagingInfo['keyword'], $pagingInfo['keyword_text']);
 
 ?>
