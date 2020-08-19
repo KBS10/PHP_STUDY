@@ -1,15 +1,14 @@
 <?php
-session_start();
-require_once ("Conf/board_conf.php");
-require_once ("util/board_util.php");
-require_once ("util/pagination.php");
-require_once ("Model/board_model.php");
-
 ////////////////////////////////////////////////////////////
 // php 오류 확인 하는 코드
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 ////////////////////////////////////////////////////////////
+session_start();
+require_once ("Conf/board_conf.php");
+require_once ("util/board_util.php");
+require_once ("util/pagination.php");
+require_once ("Model/board_model.php");
 
 $board_id = isset($_GET['board_id']) ? $_GET['board_id'] : NULL;
 $page = isset($_GET['page']) ? $_GET['page'] : 0;

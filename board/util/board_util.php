@@ -24,8 +24,6 @@ function dataValidation($dataType, $argList, $htmlStripTageOn){
     }
     $getArrayData = [];
     foreach($argList as $value){
-        if(!isset($data[$value])|| $data[$value] == "")return false;
-
         // HTML태그를 HTML specialchars로 태그 제거
         if($htmlStripTageOn){
             $getArrayData[$value] = htmlspecialchars($data[$value]);

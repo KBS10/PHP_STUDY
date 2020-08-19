@@ -1,7 +1,7 @@
 <?php
 // 현 페이지 값을 POST 값으로 수신,
 // 수신된 값이 없을 경우 현 페이지를 첫 페이지로 설정
-if (isset($_GET['currentPageNum']) && is_numeric($_GET['currentPageNum']) && $_GET['currentPageNum'] >= 0)
+if (isset($_GET['currentPageNum']) && is_numeric($_GET['currentPageNum']))
 $currentPageNum = $_GET['currentPageNum'];
 else
 $currentPageNum = 0;
